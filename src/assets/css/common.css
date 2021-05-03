@@ -1,0 +1,27 @@
+*{
+  padding: 0px;
+  margin: 0px;
+}
+a{
+  text-decoration: none;
+}
+/* 以下内容是对滚动条的美化 */
+::-webkit-scrollbar {
+  width:9px;
+  height:9px;
+}
+::-webkit-scrollbar-track {
+  width: 6px;
+  background-color:#ffffff;
+  /* -webkit-border-radius: 2em;
+  -moz-border-radius: 2em; */
+  /* border-radius:2em; */
+}
+::-webkit-scrollbar-thumb {
+  background-color:rgb(30, 30, 30, 0.3);
+  background-clip:padding-box;
+  min-height:28px;
+  /* -webkit-border-radius: 2em;
+  -moz-border-radius: 2em; */
+  /* border-radius:2em; */
+}
