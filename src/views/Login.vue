@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="login-box">
-      <h1>Share Blog</h1>
+      <h2>Share Blog</h2>
       <form>
           <input type="text" class="login-box-input" placeholder="Username">
           <input type="password" class="login-box-input" placeholder="Password">
