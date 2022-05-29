@@ -22,6 +22,11 @@ const routes = [
     path: '/login',
     name: '登录',
     component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/home',
+    name: '主页',
+    component: () => import('../views/Home.vue')
   }
 ]
 

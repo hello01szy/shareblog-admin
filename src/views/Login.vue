@@ -29,6 +29,11 @@
 <script>
 import { login } from '@/request/api.js'
 export default {
+  mounted () {
+    if (sessionStorage.getItem('token')) {
+      this.$router.replace('/home')
+    }
+  },
   data () {
     return {
       username: '',
@@ -55,6 +60,8 @@ export default {
         formData.append('password', this.password)
         login(formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(res => {
           this.$message.success(res.data.msg)
+          sessionStorage.setItem('token', res.headers.authentication)
+          this.$router.push('/home')
         }).catch(err => {
           this.$message.error(err.data.msg)
         })
