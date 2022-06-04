@@ -1,14 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/login'
   },
   {
     path: '/about',
@@ -26,7 +24,18 @@ const routes = [
   {
     path: '/home',
     name: '主页',
-    component: () => import('../views/Home.vue')
+    redirect: '/index',
+    children: [
+      {
+        path: '/index',
+        component: () => import('../views/Home.vue')
+      },
+      {
+        path: '/create',
+        component: () => import('../views/article/ArticleManage.vue')
+      }
+    ],
+    component: () => import('../views/Main.vue')
   }
 ]
 

@@ -1,5 +1,5 @@
 <template>
   <div>
-    <span>首页</span>
+    <span>文章管理</span>
   </div>
 </template>
