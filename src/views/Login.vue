@@ -67,8 +67,12 @@ export default {
         })
       } else {
         // 提示必输效果
-        this.infoValidator.username = true
-        this.infoValidator.password = true
+        if (!this.username) {
+          this.infoValidator.username = true
+        }
+        if (!this.password) {
+          this.infoValidator.password = true
+        }
       }
     }
   }
