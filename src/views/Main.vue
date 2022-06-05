@@ -1,7 +1,7 @@
 <template>
   <div class='container'>
     <el-menu
-      default-active="index"
+      :default-active="$route.path"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
@@ -11,18 +11,18 @@
       active-text-color="#ffd04b"
       :router='true'
     >
-      <el-menu-item index="index">
+      <el-menu-item index="/index">
         <template>
           <i class="el-icon-location"></i>
           <span slot="title">首页</span>
         </template>
       </el-menu-item>
-      <el-submenu index='create'>
+      <el-submenu index='article'>
         <template slot="title">
           <i class="el-icon-menu"></i>
           <span slot="title">文章管理</span>
         </template>
-        <el-menu-item index="create">
+        <el-menu-item index="/create">
           <span slot="title">创建文章</span>
         </el-menu-item>
       </el-submenu>
@@ -55,13 +55,17 @@
           </el-dropdown>
         </div>
       </div>
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-        <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-        <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-      </el-breadcrumb>
-      <router-view />
+      <div style="height: calc(100% - 60px);">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+          <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+          <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+        </el-breadcrumb>
+        <div class="">
+          <router-view />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -80,6 +84,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.$route.path)
     getInfo().then(res => {
       this.circleUrl = res.data.data.avatar
       this.loginUser = res.data.data.nickName
