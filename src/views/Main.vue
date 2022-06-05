@@ -62,7 +62,7 @@
           <el-breadcrumb-item>活动列表</el-breadcrumb-item>
           <el-breadcrumb-item>活动详情</el-breadcrumb-item>
         </el-breadcrumb>
-        <div class="">
+        <div>
           <router-view />
         </div>
       </div>
@@ -84,7 +84,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$route.path)
     getInfo().then(res => {
       this.circleUrl = res.data.data.avatar
       this.loginUser = res.data.data.nickName

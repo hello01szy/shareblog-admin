@@ -47,7 +47,7 @@ server.interceptors.response.use(
         case 403:
           Message.error('token过期了哦，请重新登陆')
           // 清除token
-          localStorage.removeItem('token')
+          sessionStorage.removeItem('token')
           store.commit('loginSuccess', null)
           // 跳转登录页面，并将要浏览的页面fullPath传过去，登录成功后跳转需要访问的页面
           setTimeout(() => {
