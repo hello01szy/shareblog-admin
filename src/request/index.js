@@ -22,7 +22,7 @@ server.interceptors.request.use(
 // 响应拦截器
 server.interceptors.response.use(
   response => {
-    if (response.data.code !== '200') {
+    if (response.data.code.substring(0, 3) !== '200') {
       return Promise.reject(response)
     }
     return Promise.resolve(response)

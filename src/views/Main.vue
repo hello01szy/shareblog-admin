@@ -55,7 +55,7 @@
           </el-dropdown>
         </div>
       </div>
-      <div style="height: calc(100% - 60px);">
+      <div style="height: calc(100% - 60px); padding-right: 20px;">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>活动管理</el-breadcrumb-item>
