@@ -38,7 +38,7 @@
       <el-form-item label="博客内容" prop="content">
         <div>
           <div ref="toolbar" class="toolbar"></div>
-          <div id="editor" class=""></div>
+          <div id="editor" style="text-align: left;"></div>
         </div>
       </el-form-item>
     </el-form>
@@ -79,7 +79,7 @@ export default {
   },
   mounted () {
     this.editor = new E('#editor')
-    this.editor.config.height = 350
+    this.editor.config.height = 600
     this.editor.config.menus = [
       'head', // 标题
       'bold', // 粗体
