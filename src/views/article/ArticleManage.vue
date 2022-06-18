@@ -3,16 +3,16 @@
     <el-form :model="blog" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="封面图片：" prop="pics">
           <div class='upload' id="upload" @click="uploadPic">
-            <span v-if="!coverUrl" class="icon-add-span"><i class="el-icon-plus"></i></span>
+            <span v-if="!blog.cover" class="icon-add-span"><i class="el-icon-plus"></i></span>
             <el-image
               ref="elImage"
               v-else
               class="cover-style"
-              :src="coverUrl"
+              :src="blog.cover"
               :preview-src-list="srcList"
               @mouseover.native="showMask(true, $event)">
             </el-image>
-            <div class="mask" v-if="maskShow && coverUrl" @mouseout="showMask(false, $event)" @click.stop>
+            <div class="mask" v-if="maskShow && blog.cover" @mouseout="showMask(false, $event)" @click.stop>
               <i class="el-icon-delete" style="color: white; font-size: 16px;" @click="delPic"></i>
               <i class="el-icon-zoom-in" style="color: white; font-size: 16px;" @click="preview"></i>
             </div>
@@ -37,15 +37,19 @@
       </el-form-item>
       <el-form-item label="博客内容" prop="content">
         <div>
-          <div ref="toolbar" class="toolbar"></div>
-          <div id="editor" style="text-align: left;"></div>
+          <div id="editor" style="text-align: left; z-index: 0;"></div>
         </div>
       </el-form-item>
     </el-form>
+    <div style="text-align: right">
+      <el-button type="warn">取消</el-button>
+      <el-button >保存为草稿</el-button>
+      <el-button type="primary" @click="publish">发布</el-button>
+    </div>
   </div>
 </template>
 <script>
-import { uploadPic } from '@/request/api.js'
+import { uploadPic, createBlog } from '@/request/api.js'
 import E from 'wangeditor'
 export default {
   name: 'ArticleManage',
@@ -53,6 +57,7 @@ export default {
     return {
       blog: {
         title: '',
+        cover: '',
         pics: [],
         tag: '',
         summary: ''
@@ -72,7 +77,6 @@ export default {
         ]
       },
       tags: [],
-      coverUrl: '',
       srcList: [],
       maskShow: false
     }
@@ -107,9 +111,39 @@ export default {
     this.editor.create()
   },
   methods: {
+    // 发布文章
+    publish () {
+      this.blog.content = this.editor.txt.html()
+      const dateTime = this.getCurrentDateTime()
+      this.blog.publishDate = dateTime.year + dateTime.month + dateTime.day
+      this.blog.publishTime = dateTime.hour + ':' + dateTime.minute + ':' + dateTime.seconds
+      this.blog.author = sessionStorage.getItem('user')
+      createBlog(this.blog).then(res => {
+        this.$message.success('已保存')
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    getCurrentDateTime () {
+      const date = new Date()
+      const year = date.getFullYear()
+      const month = (date.getMonth() + 1) <= 9 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) + ''
+      const day = date.getDate() <= 9 ? '0' + date.getDate() : date.getDate() + ''
+      const hour = date.getHours() <= 9 ? '0' + date.getHours() : date.getHours() + ''
+      const minute = date.getMinutes() <= 9 ? '0' + date.getMinutes() : date.getMinutes() + ''
+      const seconds = date.getSeconds() <= 9 ? '0' + date.getSeconds() : date.getSeconds() + ''
+      return {
+        year: year,
+        month: month,
+        day: day,
+        hour: hour,
+        minute: minute,
+        seconds: seconds
+      }
+    },
     // 删除上传了的图片
     delPic () {
-      this.coverUrl = ''
+      this.blog.cover = ''
       this.maskShow = false
     },
     preview () {
@@ -132,11 +166,11 @@ export default {
     // 图片上传
     handleFileUpload (e) {
       // 图片未上传之前准备上传但是点了取消
-      if (e.target.files.length === 0 && !this.coverUrl) {
+      if (e.target.files.length === 0 && !this.blog.cover) {
         return
       }
       // 已经上传了图片
-      if (this.coverUrl) {
+      if (this.blog.cover) {
         return
       }
       // 检查文件格式
@@ -153,9 +187,9 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }).then(res => {
-        this.coverUrl = res.data.msg
+        this.blog.cover = res.data.msg
         this.srcList = []
-        this.srcList.push(this.coverUrl)
+        this.srcList.push(this.blog.cover)
       }).catch(error => {
         console.log(error)
       }).finally(() => {
@@ -214,5 +248,8 @@ export default {
 }
 .article-body{
   padding: 20px 10px 10px 30px;
+}
+/deep/ .el-textarea__inner{
+  font-family: 'Avenir, Helvetica, Arial, sans-serif';
 }
 </style>

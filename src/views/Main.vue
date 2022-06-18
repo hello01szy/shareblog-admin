@@ -87,6 +87,7 @@ export default {
     getInfo().then(res => {
       this.circleUrl = res.data.data.avatar
       this.loginUser = res.data.data.nickName
+      sessionStorage.setItem('user', this.loginUser)
     })
   },
   methods: {
@@ -156,5 +157,8 @@ export default {
 .el-breadcrumb{
   padding-top: 10px;
   padding-left: 10px;
+}
+.el-dropdown-menu{
+  z-index: 30000 !important;
 }
 </style>
