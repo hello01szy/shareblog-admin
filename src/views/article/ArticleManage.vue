@@ -114,6 +114,7 @@ export default {
     // 发布文章
     publish () {
       this.blog.content = this.editor.txt.html()
+      this.blog.content = this.blog.content.replace(/ id=".*?"/g, '')
       const dateTime = this.getCurrentDateTime()
       this.blog.publishDate = dateTime.year + dateTime.month + dateTime.day
       this.blog.publishTime = dateTime.hour + ':' + dateTime.minute + ':' + dateTime.seconds
