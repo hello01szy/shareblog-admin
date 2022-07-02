@@ -73,7 +73,7 @@
             {{ item.meta.name }}
           </el-breadcrumb-item>
         </el-breadcrumb>
-        <div style="height: calc(100% - 84.5px); overflow: auto;">
+        <div style="height: calc(100% - 84.5px); overflow: auto; padding: 20px;">
           <router-view />
         </div>
       </div>

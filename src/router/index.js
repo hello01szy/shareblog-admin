@@ -56,6 +56,12 @@ const routes = [
             meta: {
               name: '创建文章'
             }
+          }, {
+            path: 'tag',
+            component: () => import('../views/article/TagManage.vue'),
+            meta: {
+              name: '标签管理'
+            }
           }
         ]
       }

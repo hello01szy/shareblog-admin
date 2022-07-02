@@ -61,7 +61,7 @@ export default {
         login(formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(res => {
           this.$message.success(res.data.msg)
           sessionStorage.setItem('token', res.headers.authentication)
-          this.$router.push('/home')
+          this.$router.push('/index')
         }).catch(err => {
           this.$message.error(err.data.msg)
         })
