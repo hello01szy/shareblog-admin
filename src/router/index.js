@@ -3,39 +3,63 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 const routes = [
-  {
-    path: '/',
-    redirect: '/login'
-  },
   {
     path: '/about',
     name: 'About',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    meta: {
+      name: '关于'
+    }
   },
   {
     path: '/login',
-    name: '登录',
+    name: 'Login',
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/home',
-    name: '主页',
+    path: '/',
+    name: 'Index',
     redirect: '/index',
+    meta: {
+      name: '首页'
+    },
+    component: () => import('../views/Main.vue'),
     children: [
       {
         path: '/index',
-        component: () => import('../views/Home.vue')
+        component: () => import('../views/Home.vue'),
+        meta: {
+          name: '数据一览'
+        }
       },
       {
-        path: '/create',
-        component: () => import('../views/article/ArticleManage.vue')
+        path: '/article',
+        name: 'article',
+        redirect: '/article/create',
+        component: () => import('../views/article/Article.vue'),
+        meta: {
+          name: '文章管理'
+        },
+        children: [
+          {
+            path: 'create',
+            component: () => import('../views/article/ArticleManage.vue'),
+            meta: {
+              name: '创建文章'
+            }
+          }
+        ]
       }
-    ],
-    component: () => import('../views/Main.vue')
+    ]
   }
 ]
 

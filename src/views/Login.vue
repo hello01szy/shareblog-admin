@@ -31,7 +31,7 @@ import { login } from '@/request/api.js'
 export default {
   mounted () {
     if (sessionStorage.getItem('token')) {
-      this.$router.replace('/home')
+      this.$router.replace('/')
     }
   },
   data () {

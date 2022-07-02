@@ -17,13 +17,22 @@
           <span slot="title">首页</span>
         </template>
       </el-menu-item>
-      <el-submenu index='article'>
+      <el-submenu index='/article'>
         <template slot="title">
           <i class="el-icon-menu"></i>
           <span slot="title">文章管理</span>
         </template>
-        <el-menu-item index="/create">
+        <el-menu-item index="/article/create">
           <span slot="title">创建文章</span>
+        </el-menu-item>
+        <el-menu-item index="/article/tag">
+          <span slot="title">标签管理</span>
+        </el-menu-item>
+        <el-menu-item index="/article/manage">
+          <span slot="title">文章管理</span>
+        </el-menu-item>
+        <el-menu-item index="/article/category">
+          <span slot="title">分类管理</span>
         </el-menu-item>
       </el-submenu>
       <el-menu-item index="3">
@@ -57,10 +66,12 @@
       </div>
       <div style="height: calc(100% - 60px); padding-right: 20px;">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-          <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-          <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+          <el-breadcrumb-item
+            v-for="(item, index) in $route.matched"
+            :key="index"
+            :to="{ path: item.path || item.redirect }">
+            {{ item.meta.name }}
+          </el-breadcrumb-item>
         </el-breadcrumb>
         <div style="height: calc(100% - 84.5px); overflow: auto;">
           <router-view />
