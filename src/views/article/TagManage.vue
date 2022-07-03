@@ -33,7 +33,7 @@
         width="100">
         <template slot-scope="scope">
           <el-button
-            @click.native.prevent="deleteRow(scope.$index, tableData)"
+            @click.native.prevent="editRow(scope.$index, tableData)"
             type="text"
             size="small">
             编辑
@@ -50,11 +50,12 @@
     <el-pagination
       layout="prev, pager, next"
       style="margin-top: 10px"
-      :total="50">
+      :page-size="8"
+      :total="total">
     </el-pagination>
     <el-dialog title="添加标签" :visible.sync="addTagShow" width='30%' @closed='closed'>
       <el-form :model="tag" :rules="rules" ref="tagForm">
-        <el-form-item prop="name" label="标签名称" :label-width="100">
+        <el-form-item prop="name" label="标签名称" :label-width="'100'">
           <el-input v-model="tag.name" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -66,6 +67,8 @@
   </div>
 </template>
 <script>
+import { addTag, getAllTags } from '@/request/api.js'
+import { getCurrentDateTime, converDateToStr } from '@/utils.js'
 export default {
   data () {
     return {
@@ -75,8 +78,10 @@ export default {
       addTagShow: false,
       tag: {
         name: '',
-        id: ''
+        id: '',
+        date: ''
       },
+      total: 0,
       rules: {
         name: [
           { required: true, message: '请输入标签名称', trigger: 'blur' }
@@ -84,7 +89,24 @@ export default {
       }
     }
   },
+  mounted () {
+    this.fetchAllTags()
+  },
   methods: {
+    editRow (index, date) {
+      this.tag.name = date[index].name
+      this.tag.id = date[index].id
+      this.addTagShow = true
+    },
+    fetchAllTags () {
+      getAllTags().then(res => {
+        this.tableData = res.data.data
+        this.tableData.forEach(item => {
+          item.date = converDateToStr(item.date)
+        })
+        this.total = this.tableData.length
+      })
+    },
     handleSelectionChange (val) {
       this.multipleSelection = val
     },
@@ -95,12 +117,15 @@ export default {
       this.$refs.tagForm.resetFields()
     },
     confirmAdd () {
+      const date = getCurrentDateTime()
+      this.tag.date = `${date.year}${date.month}${date.day}`
       this.$refs.tagForm.validate((valid) => {
-        if (this.tag.id) {
-          // 执行更新操作
-        } else {
-          // 执行插入操作
-        }
+        addTag(this.tag).then(res => {
+          this.$message.success('操作成功')
+          this.addTagShow = false
+          this.$refs.tagForm.resetFields()
+          this.fetchAllTags()
+        })
       })
     }
   }
