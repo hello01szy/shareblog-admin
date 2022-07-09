@@ -52,7 +52,7 @@ const routes = [
         children: [
           {
             path: 'create',
-            component: () => import('../views/article/ArticleManage.vue'),
+            component: () => import('../views/article/ArticleCreate.vue'),
             meta: {
               name: '创建文章'
             }
@@ -64,7 +64,7 @@ const routes = [
             }
           }, {
             path: 'articles',
-            component: () => import('../views/article/Articles.vue'),
+            component: () => import('../views/article/ArticlesManagement.vue'),
             meta: {
               name: '文章管理'
             }
