@@ -3,13 +3,21 @@
     <el-row>
       <el-col :span="24" style="text-align: right;">
         <el-button type="primary" size="small" @click="addTag">新增</el-button>
-        <el-button type="danger" size="small" :disabled='multipleSelection.length === 0'>删除</el-button>
+        <el-button
+          type="danger" size="small"
+          :disabled='multipleSelection.length === 0'
+          @click="batchDel">
+          删除
+        </el-button>
       </el-col>
     </el-row>
     <el-table
       :data="tableData"
       @selection-change="handleSelectionChange"
       style="width: 100%">
+      <template slot="empty">
+        <el-empty description="暂无标签哦~"></el-empty>
+      </template>
       <el-table-column
       type="selection"
       width="55">
@@ -51,9 +59,17 @@
       layout="prev, pager, next"
       style="margin-top: 10px"
       :page-size="8"
-      :total="total">
+      :total="total"
+      :current-page="currentPage"
+      @current-change="changePage">
     </el-pagination>
-    <el-dialog title="添加标签" :visible.sync="addTagShow" width='30%' @closed='closed'>
+    <el-dialog
+      title="添加标签"
+      :visible.sync="addTagShow"
+      width='30%'
+      @closed='closed'
+      :close-on-click-modal='false'
+      @destroy-on-close='true'>
       <el-form :model="tag" :rules="rules" ref="tagForm">
         <el-form-item prop="name" label="标签名称" :label-width="'100'">
           <el-input v-model="tag.name" autocomplete="off"></el-input>
@@ -67,7 +83,7 @@
   </div>
 </template>
 <script>
-import { addTag, getAllTags } from '@/request/api.js'
+import { addTag, getAllTags, deleteTags } from '@/request/api.js'
 import { getCurrentDateTime, converDateToStr } from '@/utils.js'
 export default {
   data () {
@@ -82,6 +98,7 @@ export default {
         date: ''
       },
       total: 0,
+      currentPage: 1,
       rules: {
         name: [
           { required: true, message: '请输入标签名称', trigger: 'blur' }
@@ -93,18 +110,47 @@ export default {
     this.fetchAllTags()
   },
   methods: {
+    changePage (val) {
+      this.currentPage = val
+      this.$nextTick(() => {
+        this.fetchAllTags()
+      })
+    },
     editRow (index, date) {
       this.tag.name = date[index].name
       this.tag.id = date[index].id
       this.addTagShow = true
     },
+    deleteRow (index, data) {
+      this.$confirm('确认删除？').then(_ => {
+        deleteTags({ tagsId: [data[index].id] }).then(() => {
+          this.$message.success('删除成功')
+          this.fetchAllTags()
+        }).catch(() => {
+          this.$message.error('删除失败')
+        })
+      }).catch(_ => {})
+    },
+    batchDel () {
+      const tagsId = []
+      this.multipleSelection.forEach(item => {
+        tagsId.push(item.id)
+      })
+      console.log(tagsId)
+      deleteTags({ tagsId: tagsId }).then(() => {
+        this.fetchAllTags()
+        this.$message.success('删除成功')
+      }).catch(() => {
+        this.$message.error('删除失败')
+      })
+    },
     fetchAllTags () {
-      getAllTags().then(res => {
-        this.tableData = res.data.data
+      getAllTags({ page: this.currentPage - 1, pageSize: 8 }).then(res => {
+        this.tableData = res.data.data.content
         this.tableData.forEach(item => {
           item.date = converDateToStr(item.date)
         })
-        this.total = this.tableData.length
+        this.total = res.data.data.totalElements
       })
     },
     handleSelectionChange (val) {
@@ -112,9 +158,12 @@ export default {
     },
     addTag () {
       this.addTagShow = true
+      console.log(this.tag)
     },
     closed () {
-      this.$refs.tagForm.resetFields()
+      this.tag.id = ''
+      this.tag.date = ''
+      this.tag.name = ''
     },
     confirmAdd () {
       const date = getCurrentDateTime()

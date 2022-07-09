@@ -28,7 +28,7 @@
         <el-menu-item index="/article/tag">
           <span slot="title">标签管理</span>
         </el-menu-item>
-        <el-menu-item index="/article/manage">
+        <el-menu-item index="/article/articles">
           <span slot="title">文章管理</span>
         </el-menu-item>
         <el-menu-item index="/article/category">

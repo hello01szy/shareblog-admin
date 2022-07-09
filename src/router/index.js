@@ -62,6 +62,12 @@ const routes = [
             meta: {
               name: '标签管理'
             }
+          }, {
+            path: 'articles',
+            component: () => import('../views/article/Articles.vue'),
+            meta: {
+              name: '文章管理'
+            }
           }
         ]
       }
