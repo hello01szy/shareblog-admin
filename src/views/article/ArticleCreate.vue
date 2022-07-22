@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import { uploadPic, createBlog } from '@/request/api.js'
+import { uploadPic, createBlog, updateArticleById } from '@/request/api.js'
 import E from 'wangeditor'
 export default {
   name: 'ArticleManage',
@@ -60,7 +60,8 @@ export default {
         cover: '',
         pics: [],
         tag: '',
-        summary: ''
+        summary: '',
+        content: ''
       },
       rules: {
         title: [
@@ -109,6 +110,16 @@ export default {
       'splitLine' // 全屏
     ]
     this.editor.create()
+    // 如果id不为空
+    if (this.$route.query.id) {
+      updateArticleById({ articleId: this.$route.query.id }).then(res => {
+        this.blog = res.data.data
+        this.blog.id = this.$route.query.id
+        this.editor.txt.html(this.blog.content)
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   },
   methods: {
     // 发布文章

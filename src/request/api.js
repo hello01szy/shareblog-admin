@@ -7,3 +7,5 @@ export const createBlog = (param, config) => server.post('/createArticle', param
 export const addTag = (param, config) => server.post('/addTag', param, config)
 export const getAllTags = (param, config) => server.post('/getAllTags', param, config)
 export const deleteTags = (param, config) => server.post('/deleteTags', param, config)
+export const getArticleList = (param, config) => server.post('/getArticleList', param, config)
+export const updateArticleById = (param, config) => server.post('updateArticleById', param, config)
