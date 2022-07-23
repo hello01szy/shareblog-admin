@@ -43,8 +43,8 @@
     </el-form>
     <div style="text-align: right">
       <el-button type="warn">取消</el-button>
-      <el-button >保存为草稿</el-button>
-      <el-button type="primary" @click="publish">发布</el-button>
+      <el-button @click="publish(1)">保存为草稿</el-button>
+      <el-button type="primary" @click="publish(0)">发布</el-button>
     </div>
   </div>
 </template>
@@ -123,12 +123,14 @@ export default {
   },
   methods: {
     // 发布文章
-    publish () {
+    publish (draft) {
       this.blog.content = this.editor.txt.html()
       this.blog.content = this.blog.content.replace(/ id=".*?"/g, '')
       const dateTime = this.getCurrentDateTime()
       this.blog.publishDate = dateTime.year + dateTime.month + dateTime.day
       this.blog.publishTime = dateTime.hour + ':' + dateTime.minute + ':' + dateTime.seconds
+      this.blog.draft = draft
+      this.blog.publicAttribute = '1'
       this.blog.author = sessionStorage.getItem('user')
       createBlog(this.blog).then(res => {
         this.$message.success('已保存')

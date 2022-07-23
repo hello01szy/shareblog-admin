@@ -35,11 +35,7 @@
           <span slot="title">分类管理</span>
         </el-menu-item>
       </el-submenu>
-      <el-menu-item index="3">
-        <i class="el-icon-document"></i>
-        <span slot="title">权限管理</span>
-      </el-menu-item>
-      <el-menu-item index="4">
+      <el-menu-item index="/message">
         <i class="el-icon-setting"></i>
         <span slot="title">留言管理</span>
       </el-menu-item>

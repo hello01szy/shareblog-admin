@@ -68,8 +68,22 @@ const routes = [
             meta: {
               name: '文章管理'
             }
+          }, {
+            path: 'category',
+            component: () => import('../views/article/Category.vue'),
+            meta: {
+              name: '分类管理'
+            }
           }
         ]
+      },
+      {
+        path: '/message',
+        name: 'message',
+        component: () => import('../views/MessageManage.vue'),
+        meta: {
+          name: '留言管理'
+        }
       }
     ]
   }
