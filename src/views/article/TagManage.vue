@@ -136,7 +136,6 @@ export default {
       this.multipleSelection.forEach(item => {
         tagsId.push(item.id)
       })
-      console.log(tagsId)
       deleteTags({ tagsId: tagsId }).then(() => {
         this.fetchAllTags()
         this.$message.success('删除成功')
@@ -158,7 +157,6 @@ export default {
     },
     addTag () {
       this.addTagShow = true
-      console.log(this.tag)
     },
     closed () {
       this.tag.id = ''

@@ -15,6 +15,7 @@
       </el-table-column>
       <el-table-column
         prop="title"
+        show-overflow-tooltip
         label="标题">
         <template slot-scope="scope">
           <el-link type="primary" @click="jumpToArticle(scope.row.id)">{{ scope.row.title }}</el-link>
@@ -37,7 +38,7 @@
       <el-table-column
         prop="isDraftChinese"
         label="草稿"
-        width="180"
+        width="100"
         :filters="[{text: '已发布', value: '已发布'}, {text: '草稿', value: '草稿'}]"
         :filter-method="filterHandler"
       >
@@ -45,17 +46,16 @@
       <el-table-column
         prop="support"
         label="点赞数"
-        width="180">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="readCount"
         label="阅读数"
-        width="180">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="operate"
-        label="操作"
-        width="180">
+        label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="updateArticle(scope.row.id)">修改</el-button>
           <el-button type="text" size="small" @click="deleteArticle(scope.row.id)">删除</el-button>

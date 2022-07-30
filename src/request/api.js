@@ -11,3 +11,6 @@ export const getArticleList = (param, config) => server.post('/getArticleList', 
 export const updateArticleById = (param, config) => server.post('/updateArticleById', param, config)
 export const deleteArticlesById = (param, config) => server.post('/deleteArticleById', param, config)
 export const secretArticle = (param, config) => server.post('/secretArticle', param, config)
+export const getAllCategory = (param, config) => server.post('/getAllCategory', param, config)
+export const addCategory = (param, config) => server.post('/addCategory', param, config)
+export const deleteCategory = (param, config) => server.post('/deleteCategory', param, config)
